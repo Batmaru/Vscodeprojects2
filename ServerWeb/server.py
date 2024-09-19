@@ -1,34 +1,37 @@
+import os
+import csv
 from flask import Flask, render_template, request
 
 api = Flask(__name__)
 
-# Percorso del file dove memorizzare gli utenti registrati
-file_utenti = "utenti_registrati.txt"
+# Percorso del file CSV dove memorizzare gli utenti registrati
+file_utenti = "utenti_registrati.csv"
 
-# Funzione per salvare i dati nel file
+# Funzione per salvare i dati nel file CSV
 def salva_dati_utente(nome, cognome, password, sesso):
-    with open(file_utenti, 'a') as file:
-        file.write(f"{nome},{cognome},{password},{sesso}\n")
+    with open(file_utenti, mode='a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([nome, cognome, password, sesso])
 
-
+# Funzione per verificare se l'utente è già registrato nel file CSV
 def utente_registrato(nome, cognome):
     try:
-        with open(file_utenti, 'r') as file:
-            for line in file:
-                dati = line.strip().split(',')
-                if dati[0] == nome and dati[1] == cognome:
+        with open(file_utenti, mode='r', newline='') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if row[0] == nome and row[1] == cognome:
                     return True
         return False
     except FileNotFoundError:
         return False
 
-
+# Funzione per verificare le credenziali di login dell'utente nel file CSV
 def verifica_utente(username, cognome, password):
     try:
-        with open(file_utenti, 'r') as file:
-            for line in file:
-                dati = line.strip().split(',')
-                if dati[0] == username and dati[1] == cognome and dati[2] == password:
+        with open(file_utenti, mode='r', newline='') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if row[0] == username and row[1] == cognome and row[2] == password:
                     return True
         return False
     except FileNotFoundError:
@@ -50,7 +53,6 @@ def registra():
             return render_template('errore.html')
         else:
             if nome and cognome and password and sesso:
-            
                 salva_dati_utente(nome, cognome, password, sesso)
                 return render_template('accesso_completato.html', nome=nome, cognome=cognome)
             else:
