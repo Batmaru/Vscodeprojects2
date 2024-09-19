@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrazione Utente</title>
+</head>
+<body>
+    <center>
+        <h1>Registrazione</h1>
+        <form action="/registrazione" method="POST">
+            <label for="name">Nome:</label><br>
+            <input type="text" id="name" name="name" placeholder="Inserisci il tuo nome" required><br><br>
+            <label for="cognome">Cognome:</label><br>
+            <input type="text" id="cognome" name="cognome" placeholder="Inserisci il tuo cognome" required><br><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" placeholder="Inserisci la tua password" required><br><br>
+            <label for="sesso">Sesso:</label><br>
+            <select id="sesso" name="sesso" required>
+                <option value="M">Maschio</option>
+                <option value="F">Femmina</option>
+            </select><br><br>
+            <input type="submit" value="Registrati">
+        </form>
+    </center>
+</body>
+</html>
