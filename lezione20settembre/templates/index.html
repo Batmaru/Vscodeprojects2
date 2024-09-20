@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina di Accesso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #005f73;
+        }
+        img {
+            width: 200px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Benvenuto</h1>
+    <img src="{{ url_for('static', filename='benvenuto.png') }}" alt="Immagine di Benvenuto">
+    <p>Vuoi accedere o registrarti?</p>
+    <a href="/login" class="button">Accedi</a>
+    <a href="/registrazione" class="button">Registrati</a>
+</body>
+</html>

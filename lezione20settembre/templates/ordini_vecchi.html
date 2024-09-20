@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordini Vecchi</title>
+</head>
+<body>
+    <center>
+        <h1>Ordini precedenti di {{ username }}</h1>
+        <ul>
+            {% for ordine in ordini %}
+                <li>{{ ordine }}</li>
+            {% else %}
+                <li>Nessun ordine trovato</li>
+            {% endfor %}
+        </ul>
+        <p><a href="{{ url_for('effettua_ordine', username=username) }}">Effettua un nuovo ordine</a></p>
+        <p><a href="/">Torna alla home</a></p>
+    </center>
+</body>
+</html>
+

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Effettua Ordine</title>
+</head>
+<body>
+    <center>
+        <h1>Effettua un nuovo ordine</h1>
+        <form action="{{ url_for('effettua_ordine', username=username) }}" method="POST">
+            <label for="ordine">Ordine:</label>
+            <input type="text" id="ordine" name="ordine" required>
+            <button type="submit">Invia ordine</button>
+        </form>
+        <p><a href="/">Torna alla home</a></p>
+        <p><a href="{{ url_for('ordini_vecchi', username=username) }}">Ordini passati</a></p>
+    </center>
+</body>
+</html>

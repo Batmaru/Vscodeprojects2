@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina Personale</title>
+</head>
+<body>
+    <h1>Ciao {{ nome }} {{ cognome }}</h1>
+    <h2>Ordini:</h2>
+    <ul>
+        {% for ordine in ordini %}
+            <li>{{ ordine }}</li>
+        {% else %}
+            <li>Nessun ordine trovato</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('effettua_ordine', username=username) }}">Effettua un nuovo ordine</a>
+</body>
+</html>
