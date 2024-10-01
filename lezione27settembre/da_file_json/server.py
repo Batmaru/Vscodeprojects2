@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, json
 from myjson import JsonDeserialize, JsonSerialize
 
 api = Flask(__name__)
@@ -21,16 +21,18 @@ def GestisciAddCittadino():
             return jsonify({"Esito": "200", "Msg": "Cittadino aggiunto con successo"}), 200
     else:
         return 'Content-Type non supportato!'
+    
+@api.route('/read_cittadino',methods=['POST'])
+def GestisciReadCittadino():
+    cod=request.json
+    for c in cittadini:
+        if cod==c:
+            jsonResp = {"Esito":"200", "Msg":"ok","Dati cittadino":cittadini[c]}
+            return json.dumps(jsonResp)
+    jsonResp = {"Esito":"200", "Msg":"cittadino non presente"}
+    return json.dumps(jsonResp)
 
-@api.route('/read_cittadino/<codice_fiscale>', methods=['GET'])
-def read_cittadino(codice_fiscale):
-    cittadino = cittadini.get(codice_fiscale)
-    if cittadino:
-        return jsonify({"Esito": "200", "Msg": "Cittadino trovato", "Dati": cittadino}), 200
-    else:
-        return jsonify({"Esito": "404", "Msg": "Cittadino non trovato"}), 404
 
-@api.route('/update_cittadino', methods=['POST'])
 def update_cittadino():
     content_type = request.headers.get('Content-Type')
     if content_type == 'application/json':
@@ -39,9 +41,9 @@ def update_cittadino():
         if codice_fiscale in cittadini:
             cittadini[codice_fiscale] = jsonReq
             JsonSerialize(cittadini, file_path)  
-            return jsonify({"Esito": "200", "Msg": "Cittadino aggiornato con successo"}), 200
+            return json.dumps({"Esito": "200", "Msg": "Cittadino aggiornato con successo"})
         else:
-            return jsonify({"Esito": "404", "Msg": "Cittadino non trovato"}), 404
+            return json.dumps({"Esito": "404", "Msg": "Cittadino non trovato"}), 404
     else:
         return 'Content-Type non supportato!'
 

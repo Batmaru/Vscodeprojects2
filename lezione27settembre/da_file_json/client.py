@@ -24,6 +24,8 @@ def GetCodicefiscale():
     cod = input('Inserisci codice fiscale: ')
     return {"codFiscale": cod}
 
+
+
 while True:
     print("\nOperazioni disponibili:")
     print("1. Inserisci cittadino")
@@ -51,7 +53,7 @@ while True:
         print("Richiesta dati cittadino")
         api_url = base_url + "/read_cittadino"
         jsonDataRequest = GetCodicefiscale()
-        response = requests.get(api_url + "/" + jsonDataRequest['codFiscale'])
+        response = requests.post(api_url, json= jsonDataRequest)
         print(response.json())
 
     elif sOper == 3:
@@ -76,3 +78,6 @@ while True:
 
     else:
         print("Operazione non disponibile, riprova.")
+
+
+#
