@@ -12,7 +12,7 @@ def GestisciAddCittadino():
     content_type = request.headers.get('Content-Type')
     if content_type == 'application/json':
         jsonReq = request.json
-        codice_fiscale = jsonReq.get('codFiscale')
+        codice_fiscale = jsonReq.get('codice fiscale')
         if codice_fiscale in cittadini:
             return jsonify({"Esito": "200", "Msg": "Cittadino già esistente"}), 200
         else:
@@ -37,7 +37,7 @@ def update_cittadino():
     content_type = request.headers.get('Content-Type')
     if content_type == 'application/json':
         jsonReq = request.json
-        codice_fiscale = jsonReq.get('codFiscale')
+        codice_fiscale = jsonReq.get('codice fiscale')
         if codice_fiscale in cittadini:
             cittadini[codice_fiscale] = jsonReq
             JsonSerialize(cittadini, file_path)  
@@ -51,13 +51,40 @@ def update_cittadino():
 def elimina_cittadino():
     content_type = request.headers.get('Content-Type')
     if content_type == 'application/json':
-        cod = request.json.get('codFiscale')
+        cod = request.json.get('codice fiscale')
         if cod in cittadini:
             del cittadini[cod]
             JsonSerialize(cittadini, file_path)  
             return jsonify({"Esito": "200", "Msg": "Cittadino rimosso con successo"}), 200
         else:
-            return jsonify({"Esito": "404", "Msg": "Cittadino non trovato"}), 404
+            return jsonify({"Esito": "200", "Msg": "Cittadino non trovato"}), 200
+    else:
+        return 'Content-Type non supportato!'
+    
+    
+@api.route('/login_cittadino', methods=['POST'])
+def login():
+    dictpersona=request.json
+    codf=dictpersona['codice fiscale']
+    content_type = request.headers.get('Content-Type')
+    if content_type == 'application/json':
+        for k,v in cittadini.items():
+            if k==codf:
+                if v['nome']== dictpersona['nome']:
+                    if v['cognome']==dictpersona['cognome']:
+                        if v['data nascita']==dictpersona['data nascita']:
+                            if v['codice fiscale']==dictpersona['codice fiscale']:
+                                return jsonify({"Esito": "200", "Msg": "Controlli andati a buon fine"}), 200
+                            else:
+                                return jsonify({"Esito": "200", "Msg": "Codice fiscale non corretto"}), 200
+                        else:
+                            return jsonify({"Esito": "200", "Msg": "Data di nascita non corretta"}), 200
+                    else:
+                        return jsonify({"Esito": "200", "Msg": "Cognome non corretto"}), 200
+                else:
+                    return jsonify({"Esito": "200", "Msg": "Nome non corretto"}), 200
+        
+        return jsonify({"Esito": "200", "Msg": "Codice fiscale non corretto"}), 200
     else:
         return 'Content-Type non supportato!'
 

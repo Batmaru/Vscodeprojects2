@@ -59,5 +59,7 @@ def elimina_cittadino():
             return jsonify({"Esito": "200", "Msg": "Cittadino non trovato"}), 200
     else:
         return 'Content-Type non supportato!'
+    
+
 
 api.run(host="127.0.0.1", port=8080)

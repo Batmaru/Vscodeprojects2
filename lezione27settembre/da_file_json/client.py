@@ -14,15 +14,15 @@ def GetDatiCittadino():
     datiCittadino = {
         "nome": nome, 
         "cognome": cognome, 
-        "dataNascita": dataN, 
-        "codFiscale": codF
+        "data nascita": dataN, 
+        "codice fiscale": codF
     }
     return datiCittadino
 
 
 def GetCodicefiscale():
     cod = input('Inserisci codice fiscale: ')
-    return {"codFiscale": cod}
+    return {"codice fiscale": cod}
 
 
 
@@ -32,7 +32,8 @@ while True:
     print("2. Richiedi cittadino")
     print("3. Modifica cittadino")
     print("4. Elimina cittadino")
-    print("5. Esci")
+    print("5. Controllo cittadino")
+    print("6. Esci")
 
 
     try:
@@ -70,9 +71,16 @@ while True:
         jsonDataRequest = GetCodicefiscale()
         response = requests.post(api_url, json=jsonDataRequest)
         print(response.json())
+    
+    elif sOper ==5:
+        print('controllo cittadino')
+        api_url = base_url + '/login_cittadino'
+        jsonDataRequest = GetDatiCittadino()
+        response = requests.post(api_url, json=jsonDataRequest)
+        print(response.json())
 
 
-    elif sOper == 5:
+    elif sOper == 6:
         print("Buona giornata!")
         sys.exit()
 
