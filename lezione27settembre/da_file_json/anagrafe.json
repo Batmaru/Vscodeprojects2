@@ -1,0 +1,32 @@
+{
+    "dfrcde23t44h501u": {
+        "nome": "Mario",
+        "cognome": "Retti",
+        "data nascita": "22/05/2010",
+        "codice fiscale": "dfrcde23t44h501u"
+    },
+    "bfrcde23t44h501a": {
+        "nome": "Maria",
+        "cognome": "Retti",
+        "data nascita": "22/05/2010",
+        "codice fiscale": "bfrcde23t44h501a"
+    },
+    "sfrcde23t44h501i": {
+        "nome": "Carlo",
+        "cognome": "Retti",
+        "data nascita": "22/05/2010",
+        "codice fiscale": "sfrcde23t44h501i"
+    },
+    "wwwwwwwwwwwwww": {
+        "nome": "Giulio",
+        "cognome": "Garibaldi",
+        "data nascita": "21/09/1892",
+        "codice fiscale": "wwwwwwwwwwwwww"
+    },
+    "aaaaaaaaaaaaaaa": {
+        "nome": "Silvia",
+        "cognome": "ciao",
+        "data nascita": "23/09/1990",
+        "codice fiscale": "aaaaaaaaaaaaaaa"
+    }
+}

@@ -1,15 +1,11 @@
 from flask import Flask, jsonify, request
+from myjson import JsonDeserialize, JsonSerialize
 
 api = Flask(__name__)
 
-# Dizionario che memorizza i cittadini (codice fiscale come chiave)
-cittadini = {
-    "dcfvfg70b34h501u": {
-        "nome": "Mario",
-        "cognome": "Garibaldi",
-        "dataN": "07/11/1890"
-    }
-}
+
+file_path = "anagrafe.json"
+cittadini = JsonDeserialize(file_path)
 
 @api.route('/add_cittadino', methods=['POST'])
 def GestisciAddCittadino():
@@ -21,6 +17,7 @@ def GestisciAddCittadino():
             return jsonify({"Esito": "200", "Msg": "Cittadino già esistente"}), 200
         else:
             cittadini[codice_fiscale] = jsonReq
+            JsonSerialize(cittadini, file_path) 
             return jsonify({"Esito": "200", "Msg": "Cittadino aggiunto con successo"}), 200
     else:
         return 'Content-Type non supportato!'
@@ -41,9 +38,10 @@ def update_cittadino():
         codice_fiscale = jsonReq.get('codFiscale')
         if codice_fiscale in cittadini:
             cittadini[codice_fiscale] = jsonReq
+            JsonSerialize(cittadini, file_path)  
             return jsonify({"Esito": "200", "Msg": "Cittadino aggiornato con successo"}), 200
         else:
-            return jsonify({"Esito": "200", "Msg": "Cittadino non trovato"}), 200
+            return jsonify({"Esito": "404", "Msg": "Cittadino non trovato"}), 404
     else:
         return 'Content-Type non supportato!'
 
@@ -54,10 +52,12 @@ def elimina_cittadino():
         cod = request.json.get('codFiscale')
         if cod in cittadini:
             del cittadini[cod]
+            JsonSerialize(cittadini, file_path)  
             return jsonify({"Esito": "200", "Msg": "Cittadino rimosso con successo"}), 200
         else:
-            return jsonify({"Esito": "200", "Msg": "Cittadino non trovato"}), 200
+            return jsonify({"Esito": "404", "Msg": "Cittadino non trovato"}), 404
     else:
         return 'Content-Type non supportato!'
 
 api.run(host="127.0.0.1", port=8080)
+
