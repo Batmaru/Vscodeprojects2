@@ -6,6 +6,8 @@ api = Flask(__name__)
 
 file_path = "anagrafe.json"
 cittadini = JsonDeserialize(file_path)
+file_path1="utenti.json"
+admin=JsonDeserialize(file_path1)
 
 @api.route('/add_cittadino', methods=['POST'])
 def GestisciAddCittadino():
@@ -62,31 +64,24 @@ def elimina_cittadino():
         return 'Content-Type non supportato!'
     
     
-@api.route('/login_cittadino', methods=['POST'])
+@api.route('/login_utente', methods=['POST'])
 def login():
-    dictpersona=request.json
-    codf=dictpersona['codice fiscale']
     content_type = request.headers.get('Content-Type')
     if content_type == 'application/json':
-        for k,v in cittadini.items():
-            if k==codf:
-                if v['nome']== dictpersona['nome']:
-                    if v['cognome']==dictpersona['cognome']:
-                        if v['data nascita']==dictpersona['data nascita']:
-                            if v['codice fiscale']==dictpersona['codice fiscale']:
-                                return jsonify({"Esito": "200", "Msg": "Controlli andati a buon fine"}), 200
-                            else:
-                                return jsonify({"Esito": "200", "Msg": "Codice fiscale non corretto"}), 200
-                        else:
-                            return jsonify({"Esito": "200", "Msg": "Data di nascita non corretta"}), 200
-                    else:
-                        return jsonify({"Esito": "200", "Msg": "Cognome non corretto"}), 200
-                else:
-                    return jsonify({"Esito": "200", "Msg": "Nome non corretto"}), 200
-        
-        return jsonify({"Esito": "200", "Msg": "Codice fiscale non corretto"}), 200
+        user_utente = request.json.get('user')
+        password = request.json.get('password')
+        if user_utente in admin:
+            user_info = admin[user_utente]
+            if user_info["password"] == password:
+                return jsonify({"Esito": "200", "Msg": "Login effettuato con successo", "login": True, "privilegi": user_info["privilegi"]}), 200
+            else:
+                return jsonify({"Esito": "200", "Msg": "Password errata", "login": False}), 200
+        else:
+            return jsonify({"Esito": "200", "Msg": "User non esistente", "login": False}), 200
     else:
         return 'Content-Type non supportato!'
+    
 
-api.run(host="127.0.0.1", port=8080)
+
+api.run(host="192.168.174.64", port=8080, ssl_context="adhoc")
 
