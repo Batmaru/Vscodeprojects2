@@ -4,7 +4,7 @@ import json
 import sys
 
 # base_url = "https://127.0.0.1:8080"
-base_url = "https://172.24.79.117:8080"
+base_url = "https://172.0.0.1:8080"
 
 def GetDatiCittadino():
     nome = input("Inserisci il nome: ")

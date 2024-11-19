@@ -102,4 +102,4 @@ def login():
 
 
 # api.run(host="127.0.0.1", port=8080)
-api.run(host="172.24.79.117", port=8080, ssl_context="adhoc")
+api.run(host="127.0.0.1", port=8080, ssl_context="adhoc")
