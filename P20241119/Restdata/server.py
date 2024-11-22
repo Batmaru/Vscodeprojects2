@@ -1,11 +1,11 @@
 from flask import Flask, request, jsonify
 import json
-from P20241119.Restdata.dbclient import connect, write_in_db, read_in_db, read_next_row, close
+from dbclient import connect, write_in_db, read_in_db, read_next_row, close
 from datetime import datetime
 
 app = Flask(__name__)
 
-cur = connect()
+cur =connect()
 
 @app.route('/login_utente', methods=['POST'])
 def login_utente():
@@ -127,5 +127,5 @@ def elimina_cittadino():
         return jsonify({"Esito": "404", "Msg": "Cittadino non trovato"})
 
 if __name__ == '__main__':
-    app.run(port=8080, debug=True)
+    app.run(host="127.0.0.1", port=8080,ssl_context='adhoc')
     close(cur)
