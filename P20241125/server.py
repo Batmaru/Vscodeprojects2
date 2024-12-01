@@ -92,6 +92,61 @@ def cerca_motociletta():
 
     except Exception as e:
         return jsonify({"success": False, "msg": f"Errore: {str(e)}"})
+    
+    
+
+@api.route('/vendite_giornaliere', methods=['POST'])
+def vendite_giornaliere():
+    data = request.json
+    data_inizio = data.get('data_inizio')
+    data_fine = data.get('data_fine')
+    
+    cur=connect()
+
+    query = f"""
+    SELECT f.nome AS filiale, v.data_vendita, v.tipo, 
+           CASE 
+               WHEN v.tipo = 'automobile' THEN (SELECT CONCAT(a.marca, ' ', a.modello) FROM automobili a WHERE a.id = v.item_id)
+               WHEN v.tipo = 'motocicletta' THEN (SELECT CONCAT(m.marca, ' ', m.modello) FROM motociclette m WHERE m.id = v.item_id)
+           END AS veicolo
+    FROM venduti v
+    JOIN filiali f ON v.filiale_id = f.id
+    WHERE v.data_vendita BETWEEN '{data_inizio}' AND '{data_fine}';
+    """
+
+    result=[]
+
+    if not data_inizio or not data_fine:
+        return jsonify({"success": False, "msg": "Data inizio e data fine sono obbligatorie"})
+
+    try:
+        rows_count = read_in_db(cur, query)  
+
+        if rows_count > 0:
+            
+            for _ in range(rows_count):
+                status, row = read_next_row(cur)
+                if status == 0:  
+                    result.append({ 
+                    "filiale": row[0],
+                    "data_vendita": row[1].strftime('%Y-%m-%d'),
+                    "tipo": row[2],
+                    "veicolo": row[3]
+            })
+                     
+        file_path = 'vendite_giornaliere.json'
+        with open(file_path, 'w') as json_file:
+            json.dump({"vendite": result}, json_file, indent=4, default=str)
+
+        if result:
+            return jsonify({"success": True, "vendite": result})
+        else:
+            return jsonify({"success": False, "msg": "Nessuna vendita trovata nel periodo specificato"})
+
+    except Exception as e:
+        return jsonify({"success": False, "msg": f"Errore: {str(e)}"})
+
+
 
 
 

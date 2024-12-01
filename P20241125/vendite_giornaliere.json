@@ -1,0 +1,28 @@
+{
+    "vendite": [
+        {
+            "filiale": "Filiale Roma",
+            "data_vendita": "2024-12-04",
+            "tipo": "motocicletta",
+            "veicolo": null
+        },
+        {
+            "filiale": "Filiale Roma",
+            "data_vendita": "2024-12-01",
+            "tipo": "automobile",
+            "veicolo": null
+        },
+        {
+            "filiale": "Filiale Milano",
+            "data_vendita": "2024-12-02",
+            "tipo": "motocicletta",
+            "veicolo": null
+        },
+        {
+            "filiale": "Filiale Torino",
+            "data_vendita": "2024-12-03",
+            "tipo": "automobile",
+            "veicolo": null
+        }
+    ]
+}

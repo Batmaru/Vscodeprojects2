@@ -1,7 +1,7 @@
 import requests
 import json
 
-# URL del server Flask
+
 base_url = "https://127.0.0.1:8080"
 
 def cerca_automobile(modello, marca):
@@ -52,12 +52,39 @@ def cerca_motocicletta(modello, marca):
     except requests.exceptions.RequestException as e:
         print(f"Errore nella richiesta: {e}")
 
+    
+def vendite_giornaliere(data_inizio, data_fine):
+    data = {
+        "data_inizio": data_inizio,
+        "data_fine": data_fine
+    }
+
+    try:
+        # Invia la richiesta POST al server per cercare le vendite giornaliere
+        response = requests.post(f"{base_url}/vendite_giornaliere", json=data, verify=False)
+        
+        # Verifica se la risposta è corretta
+        if response.status_code == 200:
+            result = response.json()
+            if result["success"]:
+                print("Vendite trovate:")
+                for vendita in result["vendite"]:
+                    print(f"Filiale: {vendita['filiale']}, Data: {vendita['data_vendita']}, Tipo: {vendita['tipo']}, Veicolo: {vendita['veicolo']}")
+            else:
+                print(f"Errore: {result.get('msg', 'Errore sconosciuto')}")
+        else:
+            print(f"Errore nella risposta: {response.status_code}")
+    
+    except requests.exceptions.RequestException as e:
+        print(f"Errore nella richiesta: {e}")
+
 
 while True:
     print("\nOperazioni disponibili:")
     print("1. Cerca automobile")
     print("2. Cerca moto")
-    print("3. Esci")
+    print("3. Cerca vendite")
+    print("4. Esci")
 
     try:
         scelta = int(input("Cosa vuoi fare? "))
@@ -66,11 +93,11 @@ while True:
         continue
 
     if scelta == 1:
-        # Chiedi all'utente di inserire marca e modello
+        
         modello = input("Inserisci il modello dell'automobile: ")
         marca = input("Inserisci la marca dell'automobile: ")
 
-        # Esegui la ricerca
+        
         cerca_automobile(modello, marca)
     
     elif scelta == 2:
@@ -80,7 +107,13 @@ while True:
         
         cerca_motocicletta(modello, marca)
 
-    elif scelta == 3:
+    elif scelta ==3:
+        data_inizio = input("Inserisci la data di inizio (YYYY-MM-DD): ")
+        data_fine = input("Inserisci la data di fine (YYYY-MM-DD): ")
+
+        vendite_giornaliere(data_inizio, data_fine)
+
+    elif scelta == 4:
         print("Arrivederci!")
         break
 
