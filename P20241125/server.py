@@ -118,7 +118,7 @@ def vendite_giornaliere():
     FROM venduti v
     JOIN filiali f ON v.filiale_id = f.id
     LEFT JOIN automobili a ON v.veicolo_id = a.id AND v.tipo = 'automobile'  -- Joins per le automobili
-    LEFT JOIN motociclette m ON v.veicolo_id = m.id AND v.tipo = 'motocicletta'  -- Joins per le motociclette
+    LEFT JOIN motociclette m ON v.veicolo_id = m.id AND v.tipo = 'motocicletta'  -- Joins per le mo
     WHERE v.data_vendita BETWEEN '{data_inizio}' AND '{data_fine}';
     """
 
