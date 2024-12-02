@@ -60,10 +60,8 @@ def vendite_giornaliere(data_inizio, data_fine):
     }
 
     try:
-        # Invia la richiesta POST al server per cercare le vendite giornaliere
         response = requests.post(f"{base_url}/vendite_giornaliere", json=data, verify=False)
         
-        # Verifica se la risposta è corretta
         if response.status_code == 200:
             result = response.json()
             if result["success"]:

@@ -102,17 +102,26 @@ def vendite_giornaliere():
     data_fine = data.get('data_fine')
     
     cur=connect()
-
+        
     query = f"""
-    SELECT f.nome AS filiale, v.data_vendita, v.tipo, 
-           CASE 
-               WHEN v.tipo = 'automobile' THEN (SELECT CONCAT(a.marca, ' ', a.modello) FROM automobili a WHERE a.id = v.item_id)
-               WHEN v.tipo = 'motocicletta' THEN (SELECT CONCAT(m.marca, ' ', m.modello) FROM motociclette m WHERE m.id = v.item_id)
-           END AS veicolo
+    SELECT f.nome AS filiale, 
+       v.data_vendita, 
+       v.tipo, 
+       CASE 
+           WHEN v.tipo = 'automobile' THEN a.id  -- Prendi l'id dalla tabella automobili
+           WHEN v.tipo = 'motocicletta' THEN m.id  -- Prendi l'id dalla tabella motociclette
+       END AS veicolo_id,  -- Restituisce l'id del veicolo (auto o moto)
+       CASE 
+           WHEN v.tipo = 'automobile' THEN CONCAT(a.marca, ' ', a.modello)  -- Combina marca e modello per auto
+           WHEN v.tipo = 'motocicletta' THEN CONCAT(m.marca, ' ', m.modello)  -- Combina marca e modello per moto
+       END AS veicolo  -- Restituisce la descrizione del veicolo
     FROM venduti v
     JOIN filiali f ON v.filiale_id = f.id
+    LEFT JOIN automobili a ON v.veicolo_id = a.id AND v.tipo = 'automobile'  -- Joins per le automobili
+    LEFT JOIN motociclette m ON v.veicolo_id = m.id AND v.tipo = 'motocicletta'  -- Joins per le motociclette
     WHERE v.data_vendita BETWEEN '{data_inizio}' AND '{data_fine}';
     """
+
 
     result=[]
 
@@ -120,7 +129,8 @@ def vendite_giornaliere():
         return jsonify({"success": False, "msg": "Data inizio e data fine sono obbligatorie"})
 
     try:
-        rows_count = read_in_db(cur, query)  
+        rows_count = read_in_db(cur, query) 
+
 
         if rows_count > 0:
             
@@ -131,7 +141,9 @@ def vendite_giornaliere():
                     "filiale": row[0],
                     "data_vendita": row[1].strftime('%Y-%m-%d'),
                     "tipo": row[2],
-                    "veicolo": row[3]
+                    "veicolo_id": row[3],
+                    "veicolo": row[4],
+                    
             })
                      
         file_path = 'vendite_giornaliere.json'
