@@ -24,6 +24,17 @@ CREATE TABLE motociclette (
     filiale_id INT REFERENCES filiali(id)
 );
 
+
+CREATE TABLE utenti (
+    id serial PRIMARY KEY,       -- Identificativo univoco per ogni utente
+    username VARCHAR(50) NOT NULL UNIQUE,    -- Nome utente univoco
+    password VARCHAR(255) NOT NULL,          -- Password (si consiglia di salvare gli hash, non la password in chiaro)
+    nome VARCHAR(50) NOT NULL,               -- Nome dell'utente
+    cognome VARCHAR(50) NOT NULL,            -- Cognome dell'utente
+    email VARCHAR(100) UNIQUE,               -- Email (opzionale, ma utile per il recupero password)
+);
+
+
 -- Tabella venduti
 CREATE TABLE venduti (
     id SERIAL PRIMARY KEY,
@@ -57,3 +68,9 @@ INSERT INTO venduti (filiale_id, veicolo_id, tipo, data_vendita) VALUES
 (2, 2, 'automobile', '2023-06-15'),
 (3, 1, 'motocicletta', '2023-07-10'),
 (2, 2, 'motocicletta', '2023-08-20');
+
+INSERT INTO utenti (username, password, nome, cognome, email)
+VALUES 
+    ('admin', 'hashed_password1', 'Mario', 'Rossi', 'mario.rossi@example.com'),
+    ('user1', 'hashed_password2', 'Luigi', 'Bianchi', 'luigi.bianchi@example.com'),
+    ('user2', 'hashed_password3', 'Giulia', 'Verdi', 'giulia.verdi@example.com');

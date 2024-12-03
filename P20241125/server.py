@@ -4,17 +4,52 @@ import json
 from dbclient import *
 from datetime import datetime
 
+
 api = Flask(__name__)
 
 cur = connect()
 
+@api.route('/login_utente', methods=['POST'])
+def login_utente():
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
+
+    if not username or not password:
+        return jsonify({"login": False, "msg": "Dati mancanti"})
+
+    # Modifica la query per leggere tutte le colonne o quelle richieste
+    sql = f"SELECT id, username, nome, cognome, email FROM utenti WHERE username = '{username}' AND password = '{password}';"
+    
+    try:
+        rows = read_in_db(cur, sql)
+
+        if rows > 0:
+            result = []
+            for _ in range(rows):
+                status, row = read_next_row(cur)
+                if status == 0:
+                    
+                    result.append({
+                        "id": row[0],
+                        "username": row[1],
+                        "nome": row[2],
+                        "cognome": row[3],
+                        "email": row[4],
+                    })
+            
+            return jsonify({"login": True, "utente": result})
+        else:
+            return jsonify({"login": False, "msg": "Credenziali errate"})
+    except Exception as e:
+        return jsonify({"login": False, "msg": f"Errore: {str(e)}"})
 @api.route('/cerca_automobile', methods=['POST'])
 def cerca_automobile():
 
     data = request.json
     modello = data.get('modello').lower()
     marca = data.get('marca').lower()
-
+    print(f"{modello},{marca}")
     cur = connect()
 
     query = f"""SELECT f.nome AS filiale, a.modello, a.marca, a.anno, a.disponibilita
@@ -38,10 +73,11 @@ def cerca_automobile():
                         'modello': row[1],
                         'marca': row[2],
                         'anno': row[3],
-                        'disponibilita': row[4]
+                        'disponibilita': row[4],
                     })
                 else:
                     break  
+
 
             return jsonify({"success": True, "automobili": result})
         else:
