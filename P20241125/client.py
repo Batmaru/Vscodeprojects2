@@ -63,14 +63,14 @@ def vendite_giornaliere(data_inizio, data_fine):
     }
 
     try:
-        response = requests.post(f"{base_url}/vendite_giornaliere", json=data, verify=False)
+        response = requests.post(f"{base_url}/vendite_filiali", json=data, verify=False)
         
         if response.status_code == 200:
             result = response.json()
             if result["success"]:
                 print("Vendite trovate:")
-                for vendita in result["vendite"]:
-                    print(f"Filiale: {vendita['filiale']}, Data: {vendita['data_vendita']}, Tipo: {vendita['tipo']}, Veicolo: {vendita['veicolo']}")
+                for vendita in result["vendite_filiali"]:
+                    print(f"Filiale: {vendita['filiale']}, Data: {vendita['data_vendita']}, Numero auto vendute: {vendita['NumAutomobiliVendute']}, Numero moto vendute: {vendita['NumMotoVendute']}")
             else:
                 print(f"Errore: {result.get('msg', 'Errore sconosciuto')}")
         else:

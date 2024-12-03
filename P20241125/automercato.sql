@@ -74,3 +74,31 @@ VALUES
     ('admin', 'hashed_password1', 'Mario', 'Rossi', 'mario.rossi@example.com'),
     ('user1', 'hashed_password2', 'Luigi', 'Bianchi', 'luigi.bianchi@example.com'),
     ('user2', 'hashed_password3', 'Giulia', 'Verdi', 'giulia.verdi@example.com');
+
+-- Vendite (20 righe in totale)
+INSERT INTO venduti (filiale_id, veicolo_id, tipo, data_vendita) VALUES
+-- Filiale A
+(1, 1, 'automobile', '2024-11-20'),
+(1, 1, 'automobile', '2024-11-20'),
+(1, 2, 'automobile', '2024-11-21'),
+(1, 1, 'motocicletta', '2024-11-21'),
+(1, 1, 'motocicletta', '2024-11-21'),
+(1, 2, 'motocicletta', '2024-11-22'),
+(1, 2, 'automobile', '2024-11-22'),
+(1, 1, 'motocicletta', '2024-11-23'),
+
+-- Filiale B
+(2, 2, 'automobile', '2024-11-20'),
+(2, 2, 'automobile', '2024-11-21'),
+(2, 1, 'motocicletta', '2024-11-21'),
+(2, 2, 'motocicletta', '2024-11-22'),
+(2, 1, 'automobile', '2024-11-22'),
+(2, 2, 'motocicletta', '2024-11-23'),
+
+-- Filiale C
+(3, 1, 'motocicletta', '2024-11-20'),
+(3, 2, 'motocicletta', '2024-11-21'),
+(3, 2, 'automobile', '2024-11-22'),
+(3, 2, 'automobile', '2024-11-23'),
+(3, 1, 'motocicletta', '2024-11-23'),
+(3, 1, 'automobile', '2024-11-24');

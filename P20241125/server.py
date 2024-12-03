@@ -131,68 +131,69 @@ def cerca_motociletta():
     
     
 
-@api.route('/vendite_giornaliere', methods=['POST'])
-def vendite_giornaliere():
+@api.route('/vendite_filiali', methods=['POST'])
+def vendite_filiali():
     data = request.json
     data_inizio = data.get('data_inizio')
     data_fine = data.get('data_fine')
     
-    cur=connect()
-        
-    query = f"""
-    SELECT f.nome AS filiale, 
-       v.data_vendita, 
-       v.tipo, 
-       CASE 
-           WHEN v.tipo = 'automobile' THEN a.id  -- Prendi l'id dalla tabella automobili
-           WHEN v.tipo = 'motocicletta' THEN m.id  -- Prendi l'id dalla tabella motociclette
-       END AS veicolo_id,  -- Restituisce l'id del veicolo (auto o moto)
-       CASE 
-           WHEN v.tipo = 'automobile' THEN CONCAT(a.marca, ' ', a.modello)  -- Combina marca e modello per auto
-           WHEN v.tipo = 'motocicletta' THEN CONCAT(m.marca, ' ', m.modello)  -- Combina marca e modello per moto
-       END AS veicolo  -- Restituisce la descrizione del veicolo
-    FROM venduti v
-    JOIN filiali f ON v.filiale_id = f.id
-    LEFT JOIN automobili a ON v.veicolo_id = a.id AND v.tipo = 'automobile'  -- Joins per le automobili
-    LEFT JOIN motociclette m ON v.veicolo_id = m.id AND v.tipo = 'motocicletta'  -- Joins per le mo
-    WHERE v.data_vendita BETWEEN '{data_inizio}' AND '{data_fine}';
-    """
-
-
-    result=[]
-
     if not data_inizio or not data_fine:
         return jsonify({"success": False, "msg": "Data inizio e data fine sono obbligatorie"})
 
-    try:
-        rows_count = read_in_db(cur, query) 
+    cur = connect()
 
+    query = f"""
+        SELECT filiale, data_vendita, 
+        SUM(num_automobili) AS num_automobili_vendute, 
+        SUM(num_moto) AS num_moto_vendute
+    FROM (
+        -- Conteggio vendite automobili
+        SELECT f.nome AS filiale, v.data_vendita, COUNT(*) AS num_automobili, 0 AS num_moto
+        FROM venduti v
+        JOIN filiali f ON v.filiale_id = f.id
+        WHERE v.tipo = 'automobile'
+        AND v.data_vendita BETWEEN '{data_inizio}' AND '{data_fine}'
+        GROUP BY f.nome, v.data_vendita
+
+        UNION ALL
+
+        -- Conteggio vendite motociclette
+        SELECT f.nome AS filiale, v.data_vendita, 0 AS num_automobili, 
+        COUNT(*) AS num_moto
+        FROM venduti v
+        JOIN filiali f ON v.filiale_id = f.id
+        WHERE v.tipo = 'motocicletta'
+        AND v.data_vendita BETWEEN '{data_inizio}' AND '{data_fine}'
+        GROUP BY f.nome, v.data_vendita
+    ) AS vendite
+    GROUP BY filiale, data_vendita
+    ORDER BY filiale, data_vendita;
+
+
+    """
+
+    result = []
+
+    try:
+        rows_count = read_in_db(cur, query)
 
         if rows_count > 0:
-            
             for _ in range(rows_count):
                 status, row = read_next_row(cur)
-                if status == 0:  
-                    result.append({ 
-                    "filiale": row[0],
-                    "data_vendita": row[1].strftime('%Y-%m-%d'),
-                    "tipo": row[2],
-                    "veicolo_id": row[3],
-                    "veicolo": row[4],
-                    
-            })
-                     
-        file_path = 'vendite_giornaliere.json'
-        with open(file_path, 'w') as json_file:
-            json.dump({"vendite": result}, json_file, indent=4, default=str)
-
-        if result:
-            return jsonify({"success": True, "vendite": result})
+                if status == 0:
+                    result.append({
+                        "filiale": row[0],
+                        "data_vendita": row[1].strftime('%Y-%m-%d'),
+                        "NumAutomobiliVendute": row[2],
+                        "NumMotoVendute": row[3],
+                    })
+            return jsonify({"success": True, "vendite_filiali": result})
         else:
             return jsonify({"success": False, "msg": "Nessuna vendita trovata nel periodo specificato"})
 
     except Exception as e:
         return jsonify({"success": False, "msg": f"Errore: {str(e)}"})
+
 
 
 
