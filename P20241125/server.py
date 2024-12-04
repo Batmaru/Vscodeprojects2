@@ -155,7 +155,7 @@ def vendite_filiali():
         AND v.data_vendita BETWEEN '{data_inizio}' AND '{data_fine}'
         GROUP BY f.nome, v.data_vendita
 
-        UNION ALL
+        union
 
         -- Conteggio vendite motociclette
         SELECT f.nome AS filiale, v.data_vendita, 0 AS num_automobili, 
@@ -169,6 +169,7 @@ def vendite_filiali():
     GROUP BY filiale, data_vendita
     ORDER BY filiale, data_vendita;
 
+    
 
     """
 
@@ -187,6 +188,11 @@ def vendite_filiali():
                         "NumAutomobiliVendute": row[2],
                         "NumMotoVendute": row[3],
                     })
+            file_path = 'vendite_giornaliere.json'
+            with open(file_path, 'w') as json_file:
+                json.dump({"vendite": result}, json_file, indent=4, default=str)
+
+
             return jsonify({"success": True, "vendite_filiali": result})
         else:
             return jsonify({"success": False, "msg": "Nessuna vendita trovata nel periodo specificato"})

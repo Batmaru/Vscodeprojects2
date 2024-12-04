@@ -1,0 +1,106 @@
+{
+    "vendite": [
+        {
+            "filiale": "Filiale Milano",
+            "data_vendita": "2023-06-15",
+            "NumAutomobiliVendute": "1",
+            "NumMotoVendute": "0"
+        },
+        {
+            "filiale": "Filiale Milano",
+            "data_vendita": "2023-08-20",
+            "NumAutomobiliVendute": "0",
+            "NumMotoVendute": "1"
+        },
+        {
+            "filiale": "Filiale Milano",
+            "data_vendita": "2024-11-20",
+            "NumAutomobiliVendute": "1",
+            "NumMotoVendute": "0"
+        },
+        {
+            "filiale": "Filiale Milano",
+            "data_vendita": "2024-11-21",
+            "NumAutomobiliVendute": "1",
+            "NumMotoVendute": "1"
+        },
+        {
+            "filiale": "Filiale Milano",
+            "data_vendita": "2024-11-22",
+            "NumAutomobiliVendute": "1",
+            "NumMotoVendute": "1"
+        },
+        {
+            "filiale": "Filiale Milano",
+            "data_vendita": "2024-11-23",
+            "NumAutomobiliVendute": "0",
+            "NumMotoVendute": "1"
+        },
+        {
+            "filiale": "Filiale Napoli",
+            "data_vendita": "2023-07-10",
+            "NumAutomobiliVendute": "0",
+            "NumMotoVendute": "1"
+        },
+        {
+            "filiale": "Filiale Napoli",
+            "data_vendita": "2024-11-20",
+            "NumAutomobiliVendute": "0",
+            "NumMotoVendute": "1"
+        },
+        {
+            "filiale": "Filiale Napoli",
+            "data_vendita": "2024-11-21",
+            "NumAutomobiliVendute": "0",
+            "NumMotoVendute": "1"
+        },
+        {
+            "filiale": "Filiale Napoli",
+            "data_vendita": "2024-11-22",
+            "NumAutomobiliVendute": "1",
+            "NumMotoVendute": "0"
+        },
+        {
+            "filiale": "Filiale Napoli",
+            "data_vendita": "2024-11-23",
+            "NumAutomobiliVendute": "1",
+            "NumMotoVendute": "1"
+        },
+        {
+            "filiale": "Filiale Napoli",
+            "data_vendita": "2024-11-24",
+            "NumAutomobiliVendute": "1",
+            "NumMotoVendute": "0"
+        },
+        {
+            "filiale": "Filiale Roma",
+            "data_vendita": "2023-05-01",
+            "NumAutomobiliVendute": "1",
+            "NumMotoVendute": "0"
+        },
+        {
+            "filiale": "Filiale Roma",
+            "data_vendita": "2024-11-20",
+            "NumAutomobiliVendute": "2",
+            "NumMotoVendute": "0"
+        },
+        {
+            "filiale": "Filiale Roma",
+            "data_vendita": "2024-11-21",
+            "NumAutomobiliVendute": "1",
+            "NumMotoVendute": "2"
+        },
+        {
+            "filiale": "Filiale Roma",
+            "data_vendita": "2024-11-22",
+            "NumAutomobiliVendute": "1",
+            "NumMotoVendute": "1"
+        },
+        {
+            "filiale": "Filiale Roma",
+            "data_vendita": "2024-11-23",
+            "NumAutomobiliVendute": "0",
+            "NumMotoVendute": "1"
+        }
+    ]
+}
